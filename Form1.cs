@@ -25,6 +25,7 @@ namespace Calculator
         public char Operation;
         public eOperation opt;
         public bool IsResult;
+        public bool IsDot;
     };
     
     public partial class Form1 : Form
@@ -97,6 +98,7 @@ namespace Calculator
                     btnMultiply.Enabled = true;
                     btnDivide.Enabled = true;
                     btnSubtract.Enabled = true;
+                    btnDot.Enabled = true;
                 }
                 else
                 {
@@ -117,6 +119,7 @@ namespace Calculator
             btnMultiply.Enabled = false;
             btnDivide.Enabled = false;
             btnSubtract.Enabled = false;
+            btnDot.Enabled = true;
         }
 
         private void btnMultiply_Click(object sender, EventArgs e)
@@ -130,6 +133,7 @@ namespace Calculator
             btnMultiply.Enabled = false;
             btnDivide.Enabled = false;
             btnSubtract.Enabled = false;
+            btnDot.Enabled = true;
         }
 
         private void btnDivide_Click(object sender, EventArgs e)
@@ -143,6 +147,7 @@ namespace Calculator
             btnMultiply.Enabled = false;
             btnDivide.Enabled = false;
             btnSubtract.Enabled = false;
+            btnDot.Enabled = true;
         }
 
         private void btnSubtract_Click(object sender, EventArgs e)
@@ -156,6 +161,8 @@ namespace Calculator
             btnMultiply.Enabled = false;
             btnDivide.Enabled = false;
             btnSubtract.Enabled = false;
+
+            btnDot.Enabled = true;
         }
 
         private void btnDot_Click(object sender, EventArgs e)
@@ -167,6 +174,7 @@ namespace Calculator
 
             if (!currentNumber.Contains("."))
                 tBResult.Text += ".";
+                btnDot.Enabled = false;
         }
 
         private double ChooseOperation()
@@ -265,7 +273,13 @@ namespace Calculator
                         }
                         break;
                     }
-                    break;
+                    else
+                    {
+                        string temp = tBResult.Text;
+                        tBResult.Text = "error";
+                        tBResult.Text = s;
+                    }
+                        break;
             }
             
             return result;
@@ -273,7 +287,29 @@ namespace Calculator
         private void btnEqual_Click(object sender, EventArgs e)
         {
             PlayClickSound();
-            tBResult.Text = ChooseOperation().ToString(); 
+            btnDot.Enabled = true;
+
+            if (status.IsOperation && s.Contains(status.Operation))
+            {
+                double output = ChooseOperation();
+
+                if (double.IsInfinity(output) || double.IsNaN(output))
+                {
+                    tBResult.Text = "Error";
+                }
+                else
+                {
+                    tBResult.Text = output.ToString();
+                }
+
+                status.IsResult = true;
+                status.IsOperation = false;
+                s = output.ToString(); 
+                number2 = 0;
+            }
+            
+
         }
+       
     }
 }
