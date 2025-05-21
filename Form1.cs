@@ -113,7 +113,7 @@ namespace calc {
 		}
 
 		private void btnSubtract_Click(object sender, EventArgs e) {
-			handleOperationClick('/');
+			handleOperationClick('-');
 		}
 
 		private void btnDot_Click(object sender, EventArgs e) {
